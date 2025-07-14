@@ -99,7 +99,7 @@ export default function SidechaynMusicPlayer() {
     const initializeAudioContext = () => {
       if (!audioContextRef.current) {
         // Create audio context - this is the foundation of Web Audio API
-        // @ts-ignore - Safari support for webkitAudioContext
+        // @ts-expect-error - Safari support for webkitAudioContext
         const AudioCtx = window.AudioContext || window.webkitAudioContext
         const ctx = new AudioCtx()
         audioContextRef.current = ctx
@@ -193,7 +193,7 @@ export default function SidechaynMusicPlayer() {
 
     // Cleanup function to remove event listener
     return () => audioEl.removeEventListener("loadedmetadata", initializeAudioContext)
-  }, [])
+  }, [pitch])
 
   // ============================================================================
   // REVERB IMPULSE RESPONSE GENERATION
@@ -735,7 +735,7 @@ export default function SidechaynMusicPlayer() {
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
-                  <h4 className="text-green-400 font-bold text-lg">"Collaborative Live Remix Rooms"</h4>
+                  <h4 className="text-green-400 font-bold text-lg">&quot;Collaborative Live Remix Rooms&quot;</h4>
 
                   <div className="space-y-3 text-gray-300 text-sm leading-relaxed">
                     <p>
@@ -752,11 +752,11 @@ export default function SidechaynMusicPlayer() {
                     <div className="bg-gray-800/50 p-3 rounded-lg">
                       <p className="text-white font-medium mb-2">How it works:</p>
                       <ul className="space-y-1 text-xs">
-                        <li>• Host creates a remix room for any track</li>
-                        <li>• Friends join via invite link</li>
-                        <li>• Each person controls different effects (EQ, reverb, filters)</li>
-                        <li>• Changes sync in real-time for all participants</li>
-                        <li>• Save and share the collaborative remix</li>
+                        <li>&bull; Host creates a remix room for any track</li>
+                        <li>&bull; Friends join via invite link</li>
+                        <li>&bull; Each person controls different effects (EQ, reverb, filters)</li>
+                        <li>&bull; Changes sync in real-time for all participants</li>
+                        <li>&bull; Save and share the collaborative remix</li>
                       </ul>
                     </div>
 

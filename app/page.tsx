@@ -435,7 +435,7 @@ export default function SidechaynMusicPlayer() {
                 Sidechayn is still in beta development and has not yet been publically released.
               </p>
               <p className="text-xs text-gray-400 mt-2">
-                You're one of the first 1 million users to sign up before launch!
+                You are one of the first 1 million users to sign up before launch!
               </p>
             </div>
           </div>

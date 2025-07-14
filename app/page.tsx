@@ -34,7 +34,6 @@ export default function SidechaynMusicPlayer() {
   const audioContextRef = useRef<AudioContext | null>(null) // Web Audio API context
   const sourceRef = useRef<MediaElementAudioSourceNode | null>(null) // Audio source node
   const gainNodeRef = useRef<GainNode | null>(null) // Volume control node
-  const filterNodeRef = useRef<BiquadFilterNode | null>(null) // EQ filter node
   const convolverRef = useRef<ConvolverNode | null>(null) // Reverb effect node
   const bassFilterRef = useRef<BiquadFilterNode | null>(null) // Bass EQ filter
   const midFilterRef = useRef<BiquadFilterNode | null>(null) // Mid EQ filter
@@ -100,7 +99,8 @@ export default function SidechaynMusicPlayer() {
     const initializeAudioContext = () => {
       if (!audioContextRef.current) {
         // Create audio context - this is the foundation of Web Audio API
-        const AudioCtx = window.AudioContext || (window as any).webkitAudioContext
+        // @ts-ignore - Safari support for webkitAudioContext
+        const AudioCtx = window.AudioContext || window.webkitAudioContext
         const ctx = new AudioCtx()
         audioContextRef.current = ctx
 
@@ -154,10 +154,9 @@ export default function SidechaynMusicPlayer() {
 
         // Initialize pitch shifting
         let pitchRatio = 1.0;
-        let overlapRatio = 0.5;
-        let grainSize = bufferSize * 2;
+        const grainSize = bufferSize * 2;
         let phase = 0;
-        let lastInputBuffer = new Float32Array(grainSize);
+        const lastInputBuffer = new Float32Array(grainSize);
 
         pitchShifterRef.current.onaudioprocess = (e) => {
           const inputData = e.inputBuffer.getChannelData(0);
@@ -260,11 +259,18 @@ export default function SidechaynMusicPlayer() {
     // Apply reverb effect (simplified implementation)
     // In a full implementation, you'd create a wet/dry mix
     if (convolverRef.current && audioContextRef.current) {
-      // This is a simplified reverb control - in production you'd want proper wet/dry mixing
-      const reverbAmount = reverb[0] / 100
-      // Note: Full reverb implementation would require additional gain nodes for wet/dry mix
+      // Apply reverb wet/dry mix
+      if (gainNodeRef.current && convolverRef.current && audioContextRef.current) {
+        if (reverb[0] === 0) {
+          gainNodeRef.current.disconnect();
+          gainNodeRef.current.connect(audioContextRef.current.destination);
+        } else {
+          gainNodeRef.current.disconnect();
+          gainNodeRef.current.connect(convolverRef.current);
+        }
+      }
     }
-  }, [speed, volume, bassEQ, midEQ, trebleEQ, reverb]) // Re-run when any effect changes
+  }, [speed, volume, bassEQ, midEQ, trebleEQ, reverb, pitch]) // Re-run when any effect changes
 
   // ============================================================================
   // PLAYBACK CONTROL FUNCTIONS
@@ -456,7 +462,7 @@ export default function SidechaynMusicPlayer() {
             {/* TrueFidelity Mode Toggle */}
             <div className="flex items-center justify-between mb-6">
               <div className="flex items-center space-x-3">
-                <span className="text-white font-medium">TrueFidelity® Mode?</span>
+                <span className="text-white font-medium">TrueFidelity&reg; Mode?</span>
                 <Switch checked={trueFidelityMode} onCheckedChange={setTrueFidelityMode} />
                 <span className="text-gray-400">{trueFidelityMode ? "ON" : "OFF"}</span>
               </div>
@@ -734,12 +740,12 @@ export default function SidechaynMusicPlayer() {
                   <div className="space-y-3 text-gray-300 text-sm leading-relaxed">
                     <p>
                       <strong className="text-white">The Problem:</strong> SoundCloud users can only listen to tracks
-                      passively. There's no way to collaborate on remixing or experience music together in real-time.
+                      passively. There&apos;s no way to collaborate on remixing or experience music together in real-time.
                     </p>
 
                     <p>
                       <strong className="text-white">The Solution:</strong> Multi-user live remix sessions where friends
-                      can join a "Remix Room" and collaboratively control different audio effects while listening to the
+                      can join a &quot;Remix Room&quot; and collaboratively control different audio effects while listening to the
                       same track simultaneously.
                     </p>
 

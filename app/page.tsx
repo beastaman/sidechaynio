@@ -735,17 +735,17 @@ export default function SidechaynMusicPlayer() {
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
-                  <h4 className="text-green-400 font-bold text-lg">&quot;Collaborative Live Remix Rooms&quot;</h4>
+                  <h4 className="text-green-400 font-bold text-lg">Collaborative Live Remix Rooms</h4>
 
                   <div className="space-y-3 text-gray-300 text-sm leading-relaxed">
                     <p>
                       <strong className="text-white">The Problem:</strong> SoundCloud users can only listen to tracks
-                      passively. There&apos;s no way to collaborate on remixing or experience music together in real-time.
+                      passively. There is no way to collaborate on remixing or experience music together in real-time.
                     </p>
 
                     <p>
                       <strong className="text-white">The Solution:</strong> Multi-user live remix sessions where friends
-                      can join a &quot;Remix Room&quot; and collaboratively control different audio effects while listening to the
+                      can join a Remix Room and collaboratively control different audio effects while listening to the
                       same track simultaneously.
                     </p>
 
